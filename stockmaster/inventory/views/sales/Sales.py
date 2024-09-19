@@ -1,53 +1,45 @@
-
-from inventory.models  import Product
-from inventory.serializers import ProductSerializer
-from rest_framework.permissions import IsAuthenticated
-
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from inventory.models  import Sale
+from inventory.serializers import SaleSerializer
 
-class ProductViewSet(APIView):
+class SaleViewSet(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
         user = request.user
-        products = Product.objects.filter(user=user)  
-        serializer = ProductSerializer(products, many=True) 
+        sales = Sale.objects.filter(user=user)
+        serializer = SaleSerializer(sales, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         user = request.user
         data = request.data.copy()
-        data['user'] = user.id  # Asignando el usuario a los datos
-
-        # Imprime los datos recibidos antes de la validación
-        print("Datos recibidos en POST:", data)
-        serializer = ProductSerializer(data=data, context={'request': request})
-        print(serializer.is_valid()) 
+        data['user'] = user.id  
+        
+        serializer = SaleSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            # Imprime los errores de validación del serializador
-            print("Errores del serializador:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-class ProductViewEdit(APIView):
+
+class SaleViewEdit(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, pk=None):
-        product = get_object_or_404(Product, pk=pk, user=request.user)
-        serializer = ProductSerializer(product)
+        sale = get_object_or_404(Sale, pk=pk, user=request.user)
+        serializer = SaleSerializer(sale)
         return Response(serializer.data)
 
     def put(self, request, pk=None):
-        product = get_object_or_404(Product, pk=pk, user=request.user)
+        sale = get_object_or_404(Sale, pk=pk, user=request.user)
         data = request.data.copy()
         data['user'] = request.user.id
-        serializer = ProductSerializer(product, data=data, context={'request': request})
+        serializer = SaleSerializer(sale, data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -55,13 +47,12 @@ class ProductViewEdit(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk=None):
-        product = get_object_or_404(Product, pk=pk, user=request.user)
+        sale = get_object_or_404(Sale, pk=pk, user=request.user)
         data = request.data.copy()
         data['user'] = request.user.id
-        serializer = ProductSerializer(product, data=data, partial=True, context={'request': request})
+        serializer = SaleSerializer(sale, data=data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        

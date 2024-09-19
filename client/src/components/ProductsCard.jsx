@@ -7,7 +7,7 @@ export function ProductsCard( {product , refreshProducts}) {
         <br />
         <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"  >
         <div className="flex justify-end px-4 pt-4">
-            <div className="flex justify-end p-4 bg-gray-100" key = {product.id}>
+            <div className="flex justify-end p-4" key = {product.id}>
                 <Modaledit refreshProducts={refreshProducts} productId={product.id} />
             </div>   
         </div>

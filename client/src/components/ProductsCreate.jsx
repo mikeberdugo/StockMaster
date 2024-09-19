@@ -1,33 +1,47 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { createProducts} from "../api/products.api";
+import { createProducts } from "../api/products.api";
 import { useNavigate, useParams } from "react-router-dom";
 
 export function Modal({ refreshProducts }) {
-    const [showModal, setShowModal] = React.useState(false);
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm();
-  
-    const onSubmit = handleSubmit(async (data) => {
-      console.log(data);
-  
+  const [showModal, setShowModal] = React.useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
       await createProducts(data);
-      toast.success("New Task Added", {
+      toast.success("Producto agregado con éxito", {
         position: "bottom-right",
         style: {
           background: "#101010",
           color: "#fff",
         },
       });
-  
-      setShowModal(false);
-      refreshProducts();  // Llama a la función para actualizar la lista de productos
-    });
 
+      setShowModal(false);
+      refreshProducts(); 
+      reset(); 
+    } catch (error) {
+      toast.error("No se pudo agregar el producto. Inténtalo de nuevo.", {
+        position: "bottom-right",
+        style: {
+          background: "#e74c3c", // Rojo oscuro
+          color: "#fff", // Blanco para el texto
+          padding: "10px 20px",
+          borderRadius: "5px",
+          fontSize: "16px",
+          fontWeight: "bold",
+        },
+      });
+      console.error(error);
+    }
+  });
 
   return (
     <>
@@ -131,68 +145,6 @@ export function Modal({ refreshProducts }) {
                         )}
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                        <div className="mb-3 pt-0">
-                            <select
-                            name="category"
-                            className="px-3 py-3 placeholder-blueGray-300 text-black relative bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-                            {...register("category")}
-                            >
-                            <option value="">Seleccione una Categoría</option>
-                            <option value="electronics">Electrónica</option>
-                            <option value="furniture">Muebles</option>
-                            <option value="clothing">Ropa</option>
-                            <option value="books">Libros</option>
-                            <option value="home-appliances">Electrodomésticos</option>
-                            <option value="toys">Juguetes</option>
-                            <option value="sports">Deportes</option>
-                            <option value="automotive">Automotriz</option>
-                            <option value="health">Salud</option>
-                            <option value="beauty">Belleza</option>
-                            <option value="garden">Jardín</option>
-                            <option value="office">Oficina</option>
-                            <option value="pet-supplies">Mascotas</option>
-                            <option value="kitchen">Cocina</option>
-                            <option value="travel">Viajes</option>
-                            </select>
-                        </div>
-
-                        <div className="mb-3 pt-0">
-                            <select
-                            name="brand"
-                            className="px-3 py-3 placeholder-blueGray-300 text-black relative bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
-                            {...register("brand")}
-                            >
-                            <option value="">Seleccione una Marca</option>
-                            <option value="samsung">Samsung</option>
-                            <option value="apple">Apple</option>
-                            <option value="sony">Sony</option>
-                            <option value="nike">Nike</option>
-                            <option value="adidas">Adidas</option>
-                            <option value="lg">LG</option>
-                            <option value="bosch">Bosch</option>
-                            <option value="panasonic">Panasonic</option>
-                            <option value="canon">Canon</option>
-                            <option value="dell">Dell</option>
-                            <option value="hp">HP</option>
-                            <option value="lenovo">Lenovo</option>
-                            <option value="philips">Philips</option>
-                            <option value="microsoft">Microsoft</option>
-                            <option value="asus">Asus</option>
-                            <option value="puma">Puma</option>
-                            <option value="reebok">Reebok</option>
-                            <option value="under-armour">Under Armour</option>
-                            <option value="vans">Vans</option>
-                            <option value="rival">Rival</option>
-                            <option value="whirlpool">Whirlpool</option>
-                            <option value="zara">Zara</option>
-                            <option value="burberry">Burberry</option>
-                            </select>
-                        </div>
-                        </div>
-
-
                     <div className="mb-3 pt-0">
                       <textarea
                         name="description"
@@ -231,7 +183,7 @@ export function Modal({ refreshProducts }) {
                         <input
                           type="number"
                           name="stock_alert_level"
-                          placeholder="Nivel de Alerta de Stock"
+                          placeholder="Stock del Producto" 
                           className={`px-3 py-3 placeholder-blueGray-300 text-black relative bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full ${
                             errors.stock_alert_level ? "border-red-500" : ""
                           }`}

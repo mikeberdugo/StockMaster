@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from '../api/products.api';
 import { ProductsCard } from './ProductsCard';
 import { Modal } from '../components/ProductsCreate';
+import { Navigation } from '../components/Navigation';
+
 
 export function Productslist() {
+  
+  
   const [products, setProducts] = useState([]);
 
   const refreshProducts = async () => {
@@ -17,6 +21,7 @@ export function Productslist() {
 
   return (
     <div>
+      <Navigation/>
       <div className="flex justify-end p-4 bg-gray-100 fondo">
         <Modal refreshProducts={refreshProducts} />
       </div>

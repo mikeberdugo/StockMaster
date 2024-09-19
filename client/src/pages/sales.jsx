@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Productslist } from '../components/Productslist';
+import {Saleslist} from '../components/Saleslist'
 
-export function Products() {
+export function Sales() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,5 +15,5 @@ export function Products() {
     }
   }, [navigate]);
 
-  return <Productslist />;
+  return <Saleslist />;
 }
