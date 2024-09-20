@@ -61,7 +61,8 @@ export function Salestable({ sales, refreshSales }) {
   );
 
   return (
-    <>
+    <div className='h-screen p-4'>
+            <>
       <input
         type="text"
         placeholder="Buscar..."
@@ -69,7 +70,7 @@ export function Salestable({ sales, refreshSales }) {
         className="mb-4 p-2 border border-gray-600 rounded-md bg-gray-800 text-white w-1/4"
       />
       <table {...getTableProps()} className="min-w-full divide-y divide-gray-700 bg-gray-900">
-        <thead className="bg-gray-800">
+        <thead className="">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {headerGroup.headers.map((column) => (
@@ -154,5 +155,9 @@ export function Salestable({ sales, refreshSales }) {
         </select>
       </div>
     </>
+    </div>
+
+
+
   );
 }

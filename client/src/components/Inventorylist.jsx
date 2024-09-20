@@ -201,7 +201,7 @@ export function Inventorylist() {
   return (
     <div className="bg-black min-h-screen text-white">
       <Navigation />
-      <div className="flex items-center justify-center h-screen p-4">
+      <div className=" h-screen p-4">
         <div className="w-full max-w-6xl mx-auto">
           <p className="text-4xl font-bold mb-6 text-center">Lista de Productos</p>
           <Table />

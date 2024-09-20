@@ -16,9 +16,9 @@ export function Saleslist() {
       refreshSales();
     }, []);
   return (
-    <div>
+    <div className="bg-black min-h-screen text-white">
         <Navigation/>
-        <div className="flex justify-end p-4 bg-gray-100 fondo">
+        <div className="bg-black flex justify-end p-4">
             <Modal refreshSales={refreshSales} />
         </div>
         <div >
